@@ -1,6 +1,5 @@
 {
   "projects": {
-    "default": "fir-rtc-89b99",
-    "Y": "opensource-1989d"
+    "default": "opensource-1989d"
   }
 }
