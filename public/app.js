@@ -17,6 +17,9 @@ let localStream = null;
 let remoteStream = null;
 let roomDialog = null;
 let roomId = null;
+var sw=0;
+var badCnt=0;
+var locationCnt=0;
 
 function init() {
   document.querySelector('#cameraBtn').addEventListener('click', openUserMedia);
@@ -24,6 +27,22 @@ function init() {
   document.querySelector('#createBtn').addEventListener('click', createRoom);
   document.querySelector('#joinBtn').addEventListener('click', joinRoom);
   roomDialog = new mdc.dialog.MDCDialog(document.querySelector('#room-dialog'));
+  window.onload = function(){
+    webgazer.setGazeListener(function(data, elapsedTime) {
+        if(color == 'green') sw=1;
+        if (data == null) {
+            if(sw==1 && color!='green') if(++badCnt > 100) console.log("부정행위 의심됨 db에 우선저장");
+            return;
+        }
+
+        if(sw==1 && color !='green') if(++badCnt > 100) console.log("부정행위 의심됨 db에 우선저장");
+
+        var xprediction = data.x; //these x coordinates are relative to the viewport
+        var yprediction = data.y; //these y coordinates are relative to the viewport
+
+        console.log(xprediction, yprediction); //elapsed time is based on time since begin was called
+    }).begin();
+  }
 }
 
 async function createRoom() {
