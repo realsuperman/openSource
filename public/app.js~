@@ -204,16 +204,12 @@ async function joinRoomById(roomId) {
 }
 
 async function openUserMedia(e) {
-  
-  
-	var _video = document.getElementById('videos');
-  
   const stream = await navigator.mediaDevices.getUserMedia(
       {video: true, audio: true}, 
 	  function(stream)
 	  {
-		_video.srcObject = stream; 
-		_video.play(); }, 
+		video.srcObject = stream; 
+		video.play(); }, 
 		function(error){ //Error });
 	});
 		

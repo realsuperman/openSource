@@ -87,4 +87,7 @@ div#videos > video {
     height: 100%;
     display: block;
     margin: 1em;
+	transform: rotateY(180deg);         
+	-webkit-transform:rotateY(180deg);
+
 }
