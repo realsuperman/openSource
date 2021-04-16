@@ -35,6 +35,9 @@ socket.on('user-disconnected', userId => {
 })
 
 myPeer.on('open', id => {
+  webgazer.setGazeListener(function(data, elapsedTime) {
+  }).begin();
+  
   socket.emit('join-room', ROOM_ID, id)
 })
 
