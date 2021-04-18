@@ -60,4 +60,4 @@ function addVideoStream(video, stream) {
     video.play()
   })
   videoGrid.append(video)
-}
+}//김신웅
