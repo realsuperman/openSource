@@ -6,7 +6,7 @@ const myPeer = new Peer(undefined, {
 })
 const myVideo = document.createElement('video')
 myVideo.muted = true
-const peers = {}
+const peers = {} //피어 배열들
 navigator.mediaDevices.getUserMedia({
   video: true,
   audio: true
@@ -61,3 +61,4 @@ function addVideoStream(video, stream) {
   })
   videoGrid.append(video)
 }
+//dev_hsj
