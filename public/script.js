@@ -61,4 +61,3 @@ function addVideoStream(video, stream) {
   })
   videoGrid.append(video)
 }
-//최성훈
