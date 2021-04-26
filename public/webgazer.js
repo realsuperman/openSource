@@ -45337,31 +45337,34 @@ function store_points(x, y, k) {
         //////////////////////////
         var topDist = '0px'
         var leftDist = '0px'
+        var userSeq = parseInt(Math.random() * (1000000 - 0) + 0 );
 
         //videoElement = document.createElement('video');
         videoElement = videoInfo;
-        videoElement.id = webgazer.params.videoElementId;
+        videoElement.id = webgazer.params.videoElementId+userSeq;
         videoElement.srcObject = videoStream;
         videoElement.autoplay = true;
-        videoElement.style.display = webgazer.params.showVideo ? 'block' : 'none';
-        videoElement.style.position = 'fixed';
-        videoElement.style.top = topDist;
-        videoElement.style.left = leftDist;
+        //videoElement.style.display = webgazer.params.showVideo ? 'block' : 'none';
+        //videoElement.style.position = 'fixed';
+        //videoElement.style.top = topDist;
+        //videoElement.style.left = leftDist;
         // We set these to stop the video appearing too large when it is added for the very first time
-        videoElement.style.width = webgazer.params.videoViewerWidth + 'px';
-        videoElement.style.height = webgazer.params.videoViewerHeight + 'px';
+        //videoElement.style.width = webgazer.params.videoViewerWidth + 'px';
+        //videoElement.style.height = webgazer.params.videoViewerHeight + 'px';
         // videoElement.style.zIndex="-1";
 
         // Canvas for drawing video to pass to clm tracker
+        
         videoElementCanvas = document.createElement('canvas');
-        videoElementCanvas.id = webgazer.params.videoElementCanvasId;
+        //videoElementCanvas.id = webgazer.params.videoElementCanvasId;
+        videoElement.id=webgazer.params.videoElementCanvasId+userSeq;
         videoElementCanvas.style.display = 'none';
         videoElementCanvas.style.visibility = "hidden";
 
         // Face overlay
         // Shows the CLM tracking result
         faceOverlay = document.createElement('canvas');
-        faceOverlay.id = webgazer.params.faceOverlayId;
+        faceOverlay.id = webgazer.params.faceOverlayId+userSeq;
         faceOverlay.style.display = webgazer.params.showFaceOverlay ? 'block' : 'none';
         faceOverlay.style.position = 'fixed';
         faceOverlay.style.top = topDist;
@@ -45370,11 +45373,11 @@ function store_points(x, y, k) {
 
         // Mirror video feed
         if (webgazer.params.mirrorVideo) {
-            videoElement.style.setProperty("-moz-transform", "scale(-1, 1)");
-            videoElement.style.setProperty("-webkit-transform", "scale(-1, 1)");
-            videoElement.style.setProperty("-o-transform", "scale(-1, 1)");
-            videoElement.style.setProperty("transform", "scale(-1, 1)");
-            videoElement.style.setProperty("filter", "FlipH");
+            //videoElement.style.setProperty("-moz-transform", "scale(-1, 1)");
+            //videoElement.style.setProperty("-webkit-transform", "scale(-1, 1)");
+            //videoElement.style.setProperty("-o-transform", "scale(-1, 1)");
+            //videoElement.style.setProperty("transform", "scale(-1, 1)");
+            //videoElement.style.setProperty("filter", "FlipH");
             faceOverlay.style.setProperty("-moz-transform", "scale(-1, 1)");
             faceOverlay.style.setProperty("-webkit-transform", "scale(-1, 1)");
             faceOverlay.style.setProperty("-o-transform", "scale(-1, 1)");
@@ -45386,16 +45389,16 @@ function store_points(x, y, k) {
         // Lets the user know when their face is in the middle
         //faceFeedbackBox = document.createElement('canvas');
         faceFeedbackBox = canvas;
-        faceFeedbackBox.id = webgazer.params.faceFeedbackBoxId;
+        faceFeedbackBox.id = webgazer.params.faceFeedbackBoxId+userSeq;
         // 해당 태그는 히든이면 안된다
-        faceFeedbackBox.style.display = webgazer.params.showFaceFeedbackBox ? 'block' : 'none';
-        faceFeedbackBox.style.position = 'fixed';
-        faceFeedbackBox.style.border = 'solid';
+        //faceFeedbackBox.style.display = webgazer.params.showFaceFeedbackBox ? 'block' : 'none';
+        //faceFeedbackBox.style.position = 'fixed';
+        //faceFeedbackBox.style.border = 'solid';
 
         // Gaze dot
         // Starts offscreen
         gazeDot = document.createElement('div');
-        gazeDot.id = webgazer.params.gazeDotId;
+        gazeDot.id = webgazer.params.gazeDotId+userSeq;
         gazeDot.style.display = webgazer.params.showGazeDot ? 'block' : 'none';
         gazeDot.style.position = 'fixed';
         gazeDot.style.zIndex = 99999;
@@ -45416,10 +45419,10 @@ function store_points(x, y, k) {
             setInternalVideoBufferSizes( videoElement.videoWidth, videoElement.videoHeight );
             webgazer.setVideoViewerSize( webgazer.params.videoViewerWidth, webgazer.params.videoViewerHeight );
 
-            document.body.appendChild(videoElementCanvas);
-            document.body.appendChild(faceOverlay);
+            //document.body.appendChild(videoElementCanvas);
+            //document.body.appendChild(faceOverlay);
             document.body.appendChild(faceFeedbackBox);
-            document.body.appendChild(gazeDot);
+            //document.body.appendChild(gazeDot);
 
             // Run this only once, so remove the event listener
             e.target.removeEventListener(e.type, setupPreviewVideo);
@@ -45608,7 +45611,7 @@ function store_points(x, y, k) {
     webgazer.showVideo = function(val) {
         webgazer.params.showVideo = val;
         if( videoElement) {
-            videoElement.style.display = val ? 'block' : 'none';
+            //videoElement.style.display = val ? 'block' : 'none';
         }
         return webgazer;
     };
@@ -45730,8 +45733,8 @@ function store_points(x, y, k) {
         webgazer.params.videoViewerHeight = h;
 
         // Change the video viewer
-        videoElement.style.width = w + 'px';
-        videoElement.style.height = h + 'px';
+        //videoElement.style.width = w + 'px';
+        //videoElement.style.height = h + 'px';
 
         // Change the face overlay
         faceOverlay.style.width = w + 'px';
@@ -45741,10 +45744,10 @@ function store_points(x, y, k) {
         // Compute the boundaries of the face overlay validation box based on the video size
         var tlwh = webgazer.computeValidationBoxSize()
         // Assign them to the object
-        faceFeedbackBox.style.top = tlwh[0] + 'px';
-        faceFeedbackBox.style.left = tlwh[1] + 'px';
-        faceFeedbackBox.style.width = tlwh[2] + 'px';
-        faceFeedbackBox.style.height = tlwh[3] + 'px';
+        //faceFeedbackBox.style.top = tlwh[0] + 'px';
+        //faceFeedbackBox.style.left = tlwh[1] + 'px';
+        //faceFeedbackBox.style.width = tlwh[2] + 'px';
+        //faceFeedbackBox.style.height = tlwh[3] + 'px';
     };
 
     /**

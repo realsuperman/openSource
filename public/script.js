@@ -39,8 +39,10 @@ navigator.mediaDevices.getUserMedia({
   myPeer.on('call', call => {
     call.answer(stream)
     const video = document.createElement('video')
+    const canvas = document.createElement('canvas')
+    //webgazer.begin(undefined,video2,canvas2)
     call.on('stream', userVideoStream => {
-      addVideoStream(video, userVideoStream)
+      addVideoStream(video2, canvas2, userVideoStream)
     })
   })
   //이 부분이 이제 비디오가 생기는 부분인듯
@@ -54,7 +56,7 @@ socket.on('user-connected', userId => {
     setTimeout(() => {
       // user joined
       connectToNewUser(userId, stream)
-    }, 3000)
+    }, 5000)
   })
 })
 //server에서 user-connected 되었으면 하는동작
@@ -73,7 +75,7 @@ function connectToNewUser(userId, stream) {
   const call = myPeer.call(userId, stream)
   const video = document.createElement('video')
   const canvas = document.createElement('canvas')
-  webgazer.begin(undefined,video,canvas)
+  //webgazer.begin(undefined,video,canvas)
 
   call.on('stream', userVideoStream => {
     addVideoStream(video, canvas ,userVideoStream)
@@ -87,7 +89,6 @@ function connectToNewUser(userId, stream) {
 }
 
 function addVideoStream(video, canvas ,stream) {
-  console.log("add Video");
   video.srcObject = stream
   video.addEventListener('loadedmetadata', () => {
     video.play()
