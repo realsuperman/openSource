@@ -35,9 +35,17 @@ socket.on('user-disconnected', userId => {
 })
 
 myPeer.on('open', id => {
-  webgazer.setGazeListener(function(data, elapsedTime) {
+  window._webgazer = webgazer.setGazeListener(function(data, elapsedTime) {
+    
   }).begin();
-  
+
+  setTimeout(() => {
+    window._webgazer.tracker.TFFaceMesh()
+    window._webgazer.tracker.model.then(model => {
+      console.debug(model.pipeline)
+    })
+  }, 5000)
+
   socket.emit('join-room', ROOM_ID, id)
 })
 
@@ -60,4 +68,4 @@ function addVideoStream(video, stream) {
     video.play()
   })
   videoGrid.append(video)
-}//김신웅
+}
