@@ -21,6 +21,7 @@ const myPeer = new Peer(undefined, {
 const myVideo = document.createElement('video')
 const myCanvas = document.createElement('canvas')
 webgazer.begin(undefined,myVideo,myCanvas)
+
 /*
 .createElement()는 요소를 만듭니다. 예를 들어
 .createElement( 'h1' )
@@ -90,6 +91,7 @@ function connectToNewUser(userId, stream) {
 
 function addVideoStream(video, canvas ,stream) {
   video.srcObject = stream
+
   video.addEventListener('loadedmetadata', () => {
     video.play()
   })
