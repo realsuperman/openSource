@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="preconnect" href="https://fonts.gstatic.com">
+		<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="../CSS/main.css">
+    </head>
+    <body>
+		<header>
+			<div class="container">
+				<div>
+				<h1><img class="box" src="../Img/600.png"><p>EYE cheatrace</p></h1>
+				</div>
+
+				<div class="menu">
+						<div class="item">
+							<a href="info.html" target = "_self">소개</a>
+						</div>
+						
+						<div class="item">
+							<a href="Docs.html" target = "_self">사용법</a>
+						</div>
+						
+						<div class="item">
+							<a href="info" target = "_self">다운</a>
+						</div>
+				</div>
+			</div>
+		</header>
+		<main>
+			<div>
+				<p>아이트래킹<br>시험장<br>사용하기</p>
+			</div>
+			
+			<!-- 여기에 이제 제목-->
+			<div class="btn_gruop">
+					<a href=""><button class="btnitem">학생용 시작</button></a>
+					<a href=""><button class="btnitem">감독관용 시작</button></a>
+			</div>
+			<!-- 여기에 이제 버튼 2개-->
+			<div></div>
+		</main>
+    </body>
+</html>

@@ -1,4 +1,3 @@
-
 const express = require('express')
 const app = express()
 //express 프레임 워크 모듈 불러오기
@@ -23,7 +22,6 @@ app.set('view engine', 'ejs')
 //Assigns setting name to value.
 /*
 --express 프레임 워크--
-
 set과 get은 같이 쓰인다.
 app.set('title', 'My Site')
 app.get('title') // "My Site"
