@@ -69,16 +69,30 @@ socket.on('user-disconnected', userId => {
 //------------------------------------------------------------------------
 
 myPeer.on('open', id => {
-  /*window._webgazer = webgazer.setGazeListener(function(data, elapsedTime) {
-    
-  }).begin();
+  //window._webgazer = webgazer.setGazeListener(function(data, elapsedTime) {}).begin();
 
-  setTimeout(() => {
+  /*setTimeout(() => {
     window._webgazer.tracker.TFFaceMesh()
     window._webgazer.tracker.model.then(model => {
       console.debug(model.pipeline)
     })
   }, 5000)*/
+  let width, height
+
+  setTimeout(() => {
+    const size = webgazer.computeValidationBoxSize()
+    width = size[2]
+    height = size[3]
+
+    console.debug(size)
+
+    setInterval(() => {
+      const x = Math.ceil(Math.random() * 100)
+      const y = Math.ceil(Math.random() * 100)
+      webgazer.computeValidationBoxSize = () => [x, y, width, height]
+      webgazer.setVideoViewerSize(width, height)
+    }, 2000)
+  }, 5000)
 
   socket.emit('join-room', ROOM_ID, id)
 })
