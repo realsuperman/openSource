@@ -1,4 +1,3 @@
-
 const express = require('express')
 const app = express()
 //express 프레임 워크 모듈 불러오기
@@ -18,12 +17,10 @@ const { v4: uuidV4 } = require('uuid')
 //75442486-0878-440c-9db1-a7006c25a39f
 
 //----------------------------------------
-
 app.set('view engine', 'ejs')
 //Assigns setting name to value.
 /*
 --express 프레임 워크--
-
 set과 get은 같이 쓰인다.
 app.set('title', 'My Site')
 app.get('title') // "My Site"
@@ -58,6 +55,11 @@ io.on('connection', socket => {
     socket.on('disconnect', () => {
       //socket.to(roomId).broadcast.emit('user-disconnected', userId)
       socket.broadcast.to(roomId).emit('user-disconnected', userId) 
+    })
+
+    socket.on('cheating', () => {
+      //socket.to(roomId).broadcast.emit('user-disconnected', userId)
+      socket.broadcast.to(roomId).emit('user-cheating', userId) 
     })
   })
 })
