@@ -61,7 +61,7 @@ socket.on('user-connected', userId => {
     setTimeout(() => {
       // user joined
       connectToNewUser(userId, stream)
-    }, 3000)
+    }, 8000)
   })
 })
 //server에서 user-connected 되었으면 하는동작
@@ -110,11 +110,11 @@ myPeer.on('open', id => {
 function connectToNewUser(userId, stream) {
   const call = myPeer.call(userId, stream)
   const video = document.createElement('video')
-  const canvas = document.createElement('canvas')
+  //const canvas = none
   //webgazer.begin(undefined,video,canvas)
 
   call.on('stream', userVideoStream => {
-    addVideoStream(video, canvas ,userVideoStream)
+    addVideoStream(video, null ,userVideoStream)
   })
   call.on('close', () => {
     video.remove()
@@ -131,7 +131,7 @@ function addVideoStream(video, canvas ,stream) {
     video.play()
   })
   videoGrid.append(video)
-  videoGrid.append(canvas)
+  if(canvas != null) videoGrid.append(canvas)
 }
 
 function cheating(){
