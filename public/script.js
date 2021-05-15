@@ -5,19 +5,16 @@ A Socket is the fundamental class for interacting with the server.
 */
 //const value = webgazer.begin()
 //webgazer.setGazeListener(function(data, elapsedTime) {}).begin();
-
 const videoGrid = document.getElementById('video-grid')
 /*
 Document.getElementById() 메서드는 주어진 문자열과 일치하는 id(#video-grid) 속성을 가진 요소를 찾고, 
 이를 나타내는 Element 객체를 반환합니다.
 */
 //$('#status').hide();  
-
 const myPeer = new Peer(undefined, {
   host: '/',
   port: '3001'
 })
-
 var idInfo;
 var index = 0;
 var arr = new Array(); 
@@ -25,9 +22,7 @@ const myVideo = document.createElement('video')
 const myCanvas = document.createElement('canvas')
 const giddiv = document.createElement('div')
 var ID_UUID;
-
 webgazer.begin(undefined,myVideo,myCanvas)
-
 /*
 .createElement()는 요소를 만듭니다. 예를 들어
 .createElement( 'h1' )
@@ -48,7 +43,6 @@ navigator.mediaDevices.getUserMedia({
     //webgazer.begin(undefined,video2,canvas2)
     call.on('stream', userVideoStream => {
       addVideoStream(video, canvas, userVideoStream, div)
-    //webgazer.begin(undefined,video2,canvas2)
     })
   })
   //이 부분이 이제 비디오가 생기는 부분인듯
@@ -77,7 +71,6 @@ socket.on('user-disconnected', userId => {
   }
   index--;
 })
-
 socket.on('user-cheating', userId => {
   arr[index++] = userId 
 })
@@ -85,7 +78,6 @@ socket.on('user-cheating', userId => {
 //------------------------------------------------------------------------
 myPeer.on('open', id => {
   let width, height
-
   setTimeout(() => {
     const size = webgazer.computeValidationBoxSize()
     width = size[2]
@@ -117,15 +109,12 @@ function connectToNewUser(userId, stream) {
   })
   peers[userId] = call
 }
-
 function divStyle(in_tag){
   in_tag.innerText = ID_UUID;
   in_tag.style.fontSize = "1rem";
 }
-  
 function addVideoStream(video, canvas ,stream, div) {
   video.srcObject = stream
-
   video.addEventListener('loadedmetadata', () => {
     video.play()
   })
@@ -137,7 +126,6 @@ function addVideoStream(video, canvas ,stream, div) {
 function cheating(){
   socket.emit('cheating',ROOM_ID, idInfo)
 }
-
 $('#cheatingListSearchBtn').click(function(){
   if(index>0){
     var win = window.open("", "PopupWin", "width=500,height=600");
