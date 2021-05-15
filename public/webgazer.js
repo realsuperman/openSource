@@ -44974,7 +44974,12 @@ function store_points(x, y, k) {
      * // TODO These are all wrong. The latestEyeFeatures will be in 'video' space not 'preview' space, and so need to be converted.
      */
     function checkEyesInValidationBox() {
-        if(redValue>=40) return;
+        if(redValue>=40){
+            cheating();
+            redValue++;
+            return;
+        }
+
         if (faceFeedbackBox != null && latestEyeFeatures) {
             var w = videoElement.videoWidth;
             var h = videoElement.videoHeight;
@@ -45002,9 +45007,9 @@ function store_points(x, y, k) {
 
             //check if the x values for the left and right eye are within the
             //validation box
-            console.log(eyeLX)
+            //console.log(eyeLX)
             if (eyeLX > (leftBound) && eyeLX < (rightBound) ) { // 왼쪽 경계
-                console.log("pass");
+                //console.log("pass");
                 if (eyeRX > leftBound && eyeRX < rightBound) { // 오른쪽 경계
                     xPositions = true;
                 }
@@ -45140,7 +45145,7 @@ function store_points(x, y, k) {
 
     async function loop() {
         if (!paused) {
-
+            if(redValue>40) return;
             // [20200617 XK] TODO: there is currently lag between the camera input and the face overlay. This behavior
             // is not seen in the facemesh demo. probably need to optimize async implementation. I think the issue lies
             // in the implementation of getPrediction().
@@ -45167,8 +45172,9 @@ function store_points(x, y, k) {
 
             // Feedback box
             // Check that the eyes are inside of the validation box
-            if( webgazer.params.showFaceFeedbackBox )
+            if( webgazer.params.showFaceFeedbackBox ){
                 checkEyesInValidationBox();
+            }
 
             latestGazeData = await latestGazeData;
 
