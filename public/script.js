@@ -12,12 +12,16 @@ const videoGrid = document.getElementById('video-grid')
 Document.getElementById() 메서드는 주어진 문자열과 일치하는 id(#video-grid) 속성을 가진 요소를 찾고, 
 이를 나타내는 Element 객체를 반환합니다.
 */
+//$('#status').hide();  
 
 const myPeer = new Peer(undefined, {
   host: '/',
   port: '3001'
 })
 
+var idInfo;
+var index = 0;
+var arr = new Array(); 
 const myVideo = document.createElement('video')
 const myCanvas = document.createElement('canvas')
 webgazer.begin(undefined,myVideo,myCanvas)
@@ -43,7 +47,7 @@ navigator.mediaDevices.getUserMedia({
     const canvas = document.createElement('canvas')
     //webgazer.begin(undefined,video2,canvas2)
     call.on('stream', userVideoStream => {
-      addVideoStream(video2, canvas2, userVideoStream)
+      addVideoStream(video, canvas, userVideoStream)
     })
   })
   //이 부분이 이제 비디오가 생기는 부분인듯
@@ -57,26 +61,31 @@ socket.on('user-connected', userId => {
     setTimeout(() => {
       // user joined
       connectToNewUser(userId, stream)
-    }, 5000)
+    }, 3000)
   })
 })
 //server에서 user-connected 되었으면 하는동작
 
 socket.on('user-disconnected', userId => {
   if (peers[userId]) peers[userId].close()
+
+  var i;
+  for(i=0;i<index;i++){
+    if(arr[i]==userId) break;
+  }
+  for(var j=i;j<index-1;j++){
+      array[j] = array[j+1];
+  }
+  index--;
+})
+
+socket.on('user-cheating', userId => {
+  arr[index++] = userId 
 })
 //server에서 user-disconnected 되었으면 하는동작
 //------------------------------------------------------------------------
 
 myPeer.on('open', id => {
-  //window._webgazer = webgazer.setGazeListener(function(data, elapsedTime) {}).begin();
-
-  /*setTimeout(() => {
-    window._webgazer.tracker.TFFaceMesh()
-    window._webgazer.tracker.model.then(model => {
-      console.debug(model.pipeline)
-    })
-  }, 5000)*/
   let width, height
 
   setTimeout(() => {
@@ -94,6 +103,7 @@ myPeer.on('open', id => {
     }, 2000)
   }, 5000)
 
+  idInfo = id;
   socket.emit('join-room', ROOM_ID, id)
 })
 
@@ -123,3 +133,20 @@ function addVideoStream(video, canvas ,stream) {
   videoGrid.append(video)
   videoGrid.append(canvas)
 }
+
+function cheating(){
+  socket.emit('cheating',ROOM_ID, idInfo)
+}
+  
+$('#cheatingListSearchBtn').click(function(){
+  if(index>0){
+    var win = window.open("", "PopupWin", "width=500,height=600");
+    for(var i=0;i<index;i++){
+      win.document.write(arr[i]);
+      win.document.write("<br>");
+    }  
+  }else{
+    alert("없습니다.");
+  }
+});
+

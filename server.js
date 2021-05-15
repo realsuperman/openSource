@@ -57,6 +57,11 @@ io.on('connection', socket => {
       //socket.to(roomId).broadcast.emit('user-disconnected', userId)
       socket.broadcast.to(roomId).emit('user-disconnected', userId) 
     })
+
+    socket.on('cheating', () => {
+      //socket.to(roomId).broadcast.emit('user-disconnected', userId)
+      socket.broadcast.to(roomId).emit('user-cheating', userId) 
+    })
   })
 })
 // 소켓과 
