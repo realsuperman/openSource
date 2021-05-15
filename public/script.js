@@ -132,4 +132,3 @@ $('#cheatingListSearchBtn').click(function(){
     alert("없습니다.");
   }
 });
-
