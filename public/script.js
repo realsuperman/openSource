@@ -79,17 +79,18 @@ socket.on('user-cheating', userId => {
 myPeer.on('open', id => {
   let width, height
   setTimeout(() => {
-    const size = webgazer.computeValidationBoxSize()
-    width = size[2]
-    height = size[3]
-    console.debug(size)
+    const [ox, oy, oWidth, oHeight] = webgazer.computeValidationBoxSize()
+    if (!width) width = webgazer.params.videoViewerWidth
+    if (!height) height = webgazer.params.videoViewerHeight
+    
     setInterval(() => {
-      const x = Math.ceil(Math.random() * 100)
-      const y = Math.ceil(Math.random() * 100)
-      webgazer.computeValidationBoxSize = () => [x, y, width, height]
+      const x = _.random(0, width - oWidth)
+      const y = _.random(0, height - oHeight)
+      
+      webgazer.computeValidationBoxSize = () => [x, y, oWidth, oHeight]
       webgazer.setVideoViewerSize(width, height)
     }, 2000)
-  }, 5000)
+  }, 3000)
   idInfo = id;
   ID_UUID = id;
   socket.emit('join-room', ROOM_ID, id)
