@@ -5,7 +5,10 @@ A Socket is the fundamental class for interacting with the server.
 */
 //const value = webgazer.begin()
 //webgazer.setGazeListener(function(data, elapsedTime) {}).begin();
-const videoGrid = document.getElementById('video-grid')
+const H_text = document.getElementById('header_title');
+const mainElement = document.getElementsByClassName('main_position_parent');
+let isHost;
+//const videoGrid = document.getElementById('video-grid');
 /*
 Document.getElementById() 메서드는 주어진 문자열과 일치하는 id(#video-grid) 속성을 가진 요소를 찾고, 
 이를 나타내는 Element 객체를 반환합니다.
@@ -33,8 +36,11 @@ navigator.mediaDevices.getUserMedia({
   video: true,
   audio: true
 }).then(stream => {
-  addVideoStream(myVideo, myCanvas ,stream,giddiv)
-  //미디어 입력 장치 사용 권한을 요청하며,
+  H_text.innerText ='지금 현재 방 아이디 : ' + ROOM_ID;
+  isHost = window.prompt("클라이언트이면 0관리자면 1을 입력하세요");
+  
+  addVideoStream(myVideo, myCanvas ,stream,giddiv);
+
   myPeer.on('call', call => {
     call.answer(stream)
     const video = document.createElement('video')
@@ -58,22 +64,24 @@ socket.on('user-connected', userId => {
       connectToNewUser(userId, stream)
     }, 8000)
   })
+  
+  socket.on('user-disconnected', userId => {
+    if (peers[userId]) peers[userId].close()
+    var i;
+    for(i=0;i<index;i++){
+      if(arr[i]==userId) break;
+    }
+    for(var j=i;j<index-1;j++){
+        array[j] = array[j+1];
+    }
+    index--;
+  })
+
+  socket.on('user-cheating', userId => {
+    arr[index++] = userId 
+  })
 })
 //server에서 user-connected 되었으면 하는동작
-socket.on('user-disconnected', userId => {
-  if (peers[userId]) peers[userId].close()
-  var i;
-  for(i=0;i<index;i++){
-    if(arr[i]==userId) break;
-  }
-  for(var j=i;j<index-1;j++){
-      array[j] = array[j+1];
-  }
-  index--;
-})
-socket.on('user-cheating', userId => {
-  arr[index++] = userId 
-})
 //server에서 user-disconnected 되었으면 하는동작
 //------------------------------------------------------------------------
 myPeer.on('open', id => {
@@ -86,7 +94,6 @@ myPeer.on('open', id => {
     setInterval(() => {
       const x = _.random(0, width - oWidth)
       const y = _.random(0, height - oHeight)
-      
       webgazer.computeValidationBoxSize = () => [x, y, oWidth, oHeight]
       webgazer.setVideoViewerSize(width, height)
     }, 2000)
@@ -95,6 +102,7 @@ myPeer.on('open', id => {
   ID_UUID = id;
   socket.emit('join-room', ROOM_ID, id)
 })
+
 function connectToNewUser(userId, stream) {
   const call = myPeer.call(userId, stream)
   const video = document.createElement('video')
@@ -113,6 +121,7 @@ function connectToNewUser(userId, stream) {
 function divStyle(in_tag){
   in_tag.innerText = ID_UUID;
   in_tag.style.fontSize = "1rem";
+  in_tag.style.position = "static";
 }
 function addVideoStream(video, canvas ,stream, div) {
   video.srcObject = stream
@@ -120,13 +129,14 @@ function addVideoStream(video, canvas ,stream, div) {
     video.play()
   })
   videoGrid.append(video)
-  if(canvas != null) videoGrid.append(canvas)
+  if(canvas != null && isHost != 1) {videoGrid.append(canvas)}
   videoGrid.append(div)
   divStyle(div);
 }
 function cheating(){
   socket.emit('cheating',ROOM_ID, idInfo)
 }
+
 $('#cheatingListSearchBtn').click(function(){
   if(index>0){
     var win = window.open("", "PopupWin", "width=500,height=600");

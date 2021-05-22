@@ -1,0 +1,24 @@
+npm i uuid
+npm i --save-dev nodemon
+npm i express ejs
+--------------------
+이게 서버 가동하는 명려엉
+npm run devStart
+
+새로운 배쉬를 연다
+npm i -g peer
+--------------------
+peerjs --port 3001
+
+git push origin release
+
+      grid-template-columns: repeat(auto-fill, 300px);
+      grid-auto-rows: 300px;
+
+44947
+		BufferedWriter fw = new BufferedWriter(new FileWriter(fp, true));
+		// 파일안에 문자열 쓰기
+		for(int i = 0 ; i < symLine_out; i++) {
+			fw.write(symtabList_out.label.get(i) + "\t" + symtabList_out.locationList.get(i) + "\n");
+		}
+		fw.close();

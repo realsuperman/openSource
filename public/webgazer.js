@@ -11,7 +11,7 @@
     https://localforage.github.io/localForage
     (c) 2013-2017 Mozilla, Apache License 2.0
 */
-
+const videoGrid = document.getElementById('video-grid');
 var color = null;
 var element_type = null;
 var redValue = 0;
@@ -45361,14 +45361,14 @@ function store_points(x, y, k) {
         videoElement.srcObject = videoStream;
         videoElement.autoplay = true;
         videoElement.style.display = webgazer.params.showVideo ? 'block' : 'none';
-        videoElement.style.position = 'fixed';
+        videoElement.style.position = 'absolute';
         videoElement.style.top = topDist;
         videoElement.style.left = leftDist;
         // We set these to stop the video appearing too large when it is added for the very first time
         videoElement.style.width = webgazer.params.videoViewerWidth + 'px';
         videoElement.style.height = webgazer.params.videoViewerHeight + 'px';
         videoElement.style.zIndex="-1";
-
+        
         // Canvas for drawing video to pass to clm tracker
         
         videoElementCanvas = document.createElement('canvas');
@@ -45382,7 +45382,7 @@ function store_points(x, y, k) {
         faceOverlay = document.createElement('canvas');
         faceOverlay.id = webgazer.params.faceOverlayId+userSeq;
         faceOverlay.style.display = webgazer.params.showFaceOverlay ? 'block' : 'none';
-        faceOverlay.style.position = 'fixed';
+        faceOverlay.style.position = 'absolute';
         faceOverlay.style.top = topDist;
         faceOverlay.style.left = leftDist;
         faceOverlay.style.visibility = "hidden";
@@ -45408,7 +45408,7 @@ function store_points(x, y, k) {
         faceFeedbackBox.id = webgazer.params.faceFeedbackBoxId+userSeq;
         // 해당 태그는 히든이면 안된다
         faceFeedbackBox.style.display = webgazer.params.showFaceFeedbackBox ? 'block' : 'none';
-        faceFeedbackBox.style.position = 'fixed';
+        faceFeedbackBox.style.position = 'absolute';
         faceFeedbackBox.style.border = 'solid';
 
         // Gaze dot
@@ -45416,7 +45416,7 @@ function store_points(x, y, k) {
         gazeDot = document.createElement('div');
         gazeDot.id = webgazer.params.gazeDotId+userSeq;
         gazeDot.style.display = webgazer.params.showGazeDot ? 'block' : 'none';
-        gazeDot.style.position = 'fixed';
+        gazeDot.style.position = 'absolute';
         gazeDot.style.zIndex = 99999;
         gazeDot.style.left = '-5px'; //'-999em';
         gazeDot.style.top  = '-5px';
@@ -45428,7 +45428,7 @@ function store_points(x, y, k) {
         gazeDot.style.visibility = "hidden";
 
         // Add other preview/feedback elements to the screen once the video has shown and its parameters are initialized
-        document.body.appendChild(videoElement);
+        //document.body.appendChild(videoElement);
         function setupPreviewVideo(e) {
 
             // All video preview parts have now been added, so set the size both internally and in the preview window.
@@ -45437,7 +45437,7 @@ function store_points(x, y, k) {
 
             //document.body.appendChild(videoElementCanvas);
             //document.body.appendChild(faceOverlay);
-            document.body.appendChild(faceFeedbackBox);
+           // document.body.appendChild(faceFeedbackBox);
             //document.body.appendChild(gazeDot);
 
             // Run this only once, so remove the event listener
