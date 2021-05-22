@@ -44944,7 +44944,7 @@ function store_points(x, y, k) {
      * @returns {Object} The dimensions of the validation box as top, left, width, height.
      */
     webgazer.computeValidationBoxSize = function() {
-
+        
         var vw = videoElement.videoWidth;
         var vh = videoElement.videoHeight;
         var pw = parseInt(videoElement.style.width);
@@ -44974,12 +44974,7 @@ function store_points(x, y, k) {
      * // TODO These are all wrong. The latestEyeFeatures will be in 'video' space not 'preview' space, and so need to be converted.
      */
     function checkEyesInValidationBox() {
-        if(redValue>=40){
-            cheating();
-            redValue++;
-            return;
-        }
-
+        if(redValue>=40) return;
         if (faceFeedbackBox != null && latestEyeFeatures) {
             var w = videoElement.videoWidth;
             var h = videoElement.videoHeight;
@@ -45007,9 +45002,9 @@ function store_points(x, y, k) {
 
             //check if the x values for the left and right eye are within the
             //validation box
-            //console.log(eyeLX)
+            console.log(eyeLX)
             if (eyeLX > (leftBound) && eyeLX < (rightBound) ) { // 왼쪽 경계
-                //console.log("pass");
+                console.log("pass");
                 if (eyeRX > leftBound && eyeRX < rightBound) { // 오른쪽 경계
                     xPositions = true;
                 }
@@ -45145,7 +45140,7 @@ function store_points(x, y, k) {
 
     async function loop() {
         if (!paused) {
-            if(redValue>40) return;
+
             // [20200617 XK] TODO: there is currently lag between the camera input and the face overlay. This behavior
             // is not seen in the facemesh demo. probably need to optimize async implementation. I think the issue lies
             // in the implementation of getPrediction().
@@ -45172,9 +45167,8 @@ function store_points(x, y, k) {
 
             // Feedback box
             // Check that the eyes are inside of the validation box
-            if( webgazer.params.showFaceFeedbackBox ){
+            if( webgazer.params.showFaceFeedbackBox )
                 checkEyesInValidationBox();
-            }
 
             latestGazeData = await latestGazeData;
 
@@ -45361,14 +45355,14 @@ function store_points(x, y, k) {
         videoElement.srcObject = videoStream;
         videoElement.autoplay = true;
         videoElement.style.display = webgazer.params.showVideo ? 'block' : 'none';
-        videoElement.style.position = 'absolute';
+        videoElement.style.position = 'staticS';
         videoElement.style.top = topDist;
         videoElement.style.left = leftDist;
         // We set these to stop the video appearing too large when it is added for the very first time
         videoElement.style.width = webgazer.params.videoViewerWidth + 'px';
         videoElement.style.height = webgazer.params.videoViewerHeight + 'px';
         videoElement.style.zIndex="-1";
-        
+
         // Canvas for drawing video to pass to clm tracker
         
         videoElementCanvas = document.createElement('canvas');
@@ -45382,7 +45376,7 @@ function store_points(x, y, k) {
         faceOverlay = document.createElement('canvas');
         faceOverlay.id = webgazer.params.faceOverlayId+userSeq;
         faceOverlay.style.display = webgazer.params.showFaceOverlay ? 'block' : 'none';
-        faceOverlay.style.position = 'absolute';
+        faceOverlay.style.position = 'static';
         faceOverlay.style.top = topDist;
         faceOverlay.style.left = leftDist;
         faceOverlay.style.visibility = "hidden";
@@ -45428,7 +45422,7 @@ function store_points(x, y, k) {
         gazeDot.style.visibility = "hidden";
 
         // Add other preview/feedback elements to the screen once the video has shown and its parameters are initialized
-        //document.body.appendChild(videoElement);
+        document.body.appendChild(videoElement);
         function setupPreviewVideo(e) {
 
             // All video preview parts have now been added, so set the size both internally and in the preview window.
@@ -45437,7 +45431,7 @@ function store_points(x, y, k) {
 
             //document.body.appendChild(videoElementCanvas);
             //document.body.appendChild(faceOverlay);
-           // document.body.appendChild(faceFeedbackBox);
+            document.body.appendChild(faceFeedbackBox);
             //document.body.appendChild(gazeDot);
 
             // Run this only once, so remove the event listener
@@ -45968,4 +45962,4 @@ function store_points(x, y, k) {
 
 }(window));
 
-//# sourceMappingURL=webgazer.js.map
+//# sourceMappingURL=webgazer.js.m

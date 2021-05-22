@@ -6,6 +6,8 @@ A Socket is the fundamental class for interacting with the server.
 //const value = webgazer.begin()
 //webgazer.setGazeListener(function(data, elapsedTime) {}).begin();
 const H_text = document.getElementById('header_title');
+const H_mode = document.getElementById('header_mode');
+const checkButton = document.getElementById('cheatingListSearchBtn');
 const mainElement = document.getElementsByClassName('main_position_parent');
 let isHost;
 //const videoGrid = document.getElementById('video-grid');
@@ -38,7 +40,8 @@ navigator.mediaDevices.getUserMedia({
 }).then(stream => {
   H_text.innerText ='지금 현재 방 아이디 : ' + ROOM_ID;
   isHost = window.prompt("클라이언트이면 0관리자면 1을 입력하세요");
-  
+  if(isHost != 1){H_mode.innerText = '당신은 클라이언트 입니다.'; checkButton.remove();}
+  else {H_mode.innerText = '당신은 관리자 입니다.';}
   addVideoStream(myVideo, myCanvas ,stream,giddiv);
 
   myPeer.on('call', call => {
@@ -118,10 +121,19 @@ function connectToNewUser(userId, stream) {
   })
   peers[userId] = call
 }
+
 function divStyle(in_tag){
   in_tag.innerText = ID_UUID;
   in_tag.style.fontSize = "1rem";
-  in_tag.style.position = "static";
+  in_tag.style.position = "relative";
+  in_tag.style.top = '300px';
+  in_tag.style.textAlign = 'center';
+  in_tag.style.left = '-300px';
+  in_tag.style.backgroundColor = 'black';
+  in_tag.style.color = 'white';
+  in_tag.style.border = '1px solid black'
+  in_tag.style.width = '320px';
+  in_tag.style.height = '20px';
 }
 function addVideoStream(video, canvas ,stream, div) {
   video.srcObject = stream
