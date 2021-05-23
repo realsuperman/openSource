@@ -8,6 +8,7 @@
     const ROOM_ID = "<%= roomId %>"
   </script>
   <script defer src="https://unpkg.com/peerjs@1.2.0/dist/peerjs.min.js"></script>
+  <!--<script> 태그의 defer 속성은 페이지가 모두 로드된 후에 해당 외부 스크립트가 실행됨을 명시합니다.-->
   <script src="/socket.io/socket.io.js" defer></script>
   <script src="/webgazer.js" defer></script>
   <script src="script.js" defer></script>
@@ -16,10 +17,49 @@
 
   <title>Document</title>
   <style>
+    header {
+      border : 1px solid black; 
+	    margin-top : 20px;
+	    margin-bottom : 20px;
+      background-color: white;
+    }
+	.header-container{
+		display:flex;
+		flex-direction : column;
+	}
+	.header-item{
+		text-align:center;
+	}
+	Button {
+		background-color: black;
+		border: none;
+		color: white;
+		padding: 15px 30px;
+		text-align: center;
+		text-decoration: none;
+		display: inline-block;
+		font-size: 16px;
+		margin: 4px 2px;
+		cursor: pointer;
+	}
+	main {
+		border : 1px solid black; 
+    width: 90%;
+    z-index: -99;
+    margin: 50px;
+    background-color: white;
+	}
+  .main_position_parent
+  {
+    position: relative;
+  }
     #video-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, 300px);
-      grid-auto-rows: 300px;
+      grid-auto-rows: 320px;
+    }
+    #video-grid div{
+      text-align: center;
     }
     
     video {
@@ -27,6 +67,7 @@
       height: 100%;
       object-fit: cover;
       transform: rotateY(180deg);         
+      
       -webkit-transform:rotateY(180deg);
     }
     canvas {
@@ -34,9 +75,19 @@
       height: 100%;
     }
   </style>
+
 </head>
 <body>
-  <div id="video-grid"></div>
-  <Button id="cheatingListSearchBtn">부정행위명단보기</Button>
+  <header>
+  <div class="header-container">
+	<!-- 아래는 동적으로 이후에 생성되야 하는것임 -->
+    <h1 class="header-item" id="header_title"></h1>
+    <h2 class="header-item" id="header_mode"></h2>
+    <Button class="header-item"id="cheatingListSearchBtn">부정행위명단보기</Button>
+	</div>
+  </header>
+  <main class="main_position_parent">
+    <div id="video-grid"></div>
+  </main>
 </body>
 </html>
