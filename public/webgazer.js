@@ -45422,7 +45422,7 @@ function store_points(x, y, k) {
         gazeDot.style.visibility = "hidden";
 
         // Add other preview/feedback elements to the screen once the video has shown and its parameters are initialized
-        document.body.appendChild(videoElement);
+        videoGrid.append(videoElement);
         function setupPreviewVideo(e) {
 
             // All video preview parts have now been added, so set the size both internally and in the preview window.
@@ -45431,7 +45431,7 @@ function store_points(x, y, k) {
 
             //document.body.appendChild(videoElementCanvas);
             //document.body.appendChild(faceOverlay);
-            document.body.appendChild(faceFeedbackBox);
+            videoGrid.append(faceFeedbackBox);
             //document.body.appendChild(gazeDot);
 
             // Run this only once, so remove the event listener
@@ -45962,4 +45962,4 @@ function store_points(x, y, k) {
 
 }(window));
 
-//# sourceMappingURL=webgazer.js.m
+//# sourceMappingURL=webgazer.js.m]\

@@ -39,10 +39,14 @@ navigator.mediaDevices.getUserMedia({
   audio: true
 }).then(stream => {
   H_text.innerText ='지금 현재 방 아이디 : ' + ROOM_ID;
+  addVideoStream(myVideo, myCanvas ,stream,giddiv);
   isHost = window.prompt("클라이언트이면 0관리자면 1을 입력하세요");
   if(isHost != 1){H_mode.innerText = '당신은 클라이언트 입니다.'; checkButton.remove();}
-  else {H_mode.innerText = '당신은 관리자 입니다.';}
-  addVideoStream(myVideo, myCanvas ,stream,giddiv);
+  else {
+    H_mode.innerText = '당신은 관리자 입니다.';
+    const canvasElement = document.getElementsByTagName('canvas');
+    canvasElement[0].remove();
+  }
 
   myPeer.on('call', call => {
     call.answer(stream)
@@ -89,10 +93,11 @@ socket.on('user-connected', userId => {
 //------------------------------------------------------------------------
 myPeer.on('open', id => {
   let width, height
+  if(isHost != 1){
   setTimeout(() => {
     const [ox, oy, oWidth, oHeight] = webgazer.computeValidationBoxSize()
-    if (!width) width = webgazer.params.videoViewerWidth
-    if (!height) height = webgazer.params.videoViewerHeight
+    if (!width) width = webgazer.params.videoViewerWidth 
+    if (!height) height = webgazer.params.videoViewerHeight 
     
     setInterval(() => {
       const x = _.random(0, width - oWidth)
@@ -101,6 +106,10 @@ myPeer.on('open', id => {
       webgazer.setVideoViewerSize(width, height)
     }, 2000)
   }, 3000)
+}
+else{
+  
+}
   idInfo = id;
   ID_UUID = id;
   socket.emit('join-room', ROOM_ID, id)
