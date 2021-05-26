@@ -45036,7 +45036,7 @@ function store_points(x, y, k) {
             }
         }
         else {
-            color='black';
+            color='gray';
             faceFeedbackBox.style.border = 'solid black';
         }
     }
@@ -45355,7 +45355,7 @@ function store_points(x, y, k) {
         videoElement.srcObject = videoStream;
         videoElement.autoplay = true;
         videoElement.style.display = webgazer.params.showVideo ? 'block' : 'none';
-        videoElement.style.position = 'staticS';
+        videoElement.style.position = 'relative';
         videoElement.style.top = topDist;
         videoElement.style.left = leftDist;
         // We set these to stop the video appearing too large when it is added for the very first time

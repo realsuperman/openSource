@@ -1,10 +1,10 @@
 {
   "name": "test",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
-    "devStart": "nodemon server.js"
+    "devStart": "nodemon server.js",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
@@ -17,5 +17,14 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/realsuperman/openSource.git"
+  },
+  "bugs": {
+    "url": "https://github.com/realsuperman/openSource/issues"
+  },
+  "homepage": "https://github.com/realsuperman/openSource#readme",
+  "description": ""
 }
