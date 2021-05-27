@@ -9,6 +9,7 @@ const H_text = document.getElementById('header_title');
 const H_mode = document.getElementById('header_mode');
 const checkButton = document.getElementById('cheatingListSearchBtn');
 const mainElement = document.getElementsByClassName('main_position_parent');
+let video_back = document.getElementsByTagName('video');
 let isHost;
 //const videoGrid = document.getElementById('video-grid');
 /*
@@ -39,7 +40,6 @@ navigator.mediaDevices.getUserMedia({
   audio: true
 }).then(stream => {
   H_text.innerText ='지금 현재 방 아이디 : ' + ROOM_ID;
-  addVideoStream(myVideo, myCanvas ,stream,giddiv);
   isHost = window.prompt("클라이언트이면 0관리자면 1을 입력하세요");
   if(isHost != 1){H_mode.innerText = '당신은 클라이언트 입니다.'; checkButton.remove();}
   else {
@@ -47,7 +47,8 @@ navigator.mediaDevices.getUserMedia({
     const canvasElement = document.getElementsByTagName('canvas');
     canvasElement[0].remove();
   }
-
+  addVideoStream(myVideo, myCanvas ,stream,giddiv);
+  if(isHost == 1){
   myPeer.on('call', call => {
     call.answer(stream)
     const video = document.createElement('video')
@@ -58,13 +59,15 @@ navigator.mediaDevices.getUserMedia({
       addVideoStream(video, canvas, userVideoStream, div)
     })
   })
+}
   //이 부분이 이제 비디오가 생기는 부분인듯
   //jQuery에서 이벤트를 바인드 하는 방법은 여러가지가 있지만 이번엔 on() 함수를 이용해서 이벤트를 바인드하는 것을 알아보자. 이벤트 바인딩
   //특정 동작을 통해서 새로운 Element들이 <div class="root"> 아래로 생성
   //socket.on(eventName, callback)
 //------------------------------------------------------------------------
 socket.on('user-connected', userId => {
-  ID_UUID = userId;
+    console.log("님은 관리자임");
+    ID_UUID = userId;
     // user is joining
     setTimeout(() => {
       // user joined
@@ -73,6 +76,7 @@ socket.on('user-connected', userId => {
   })
   
   socket.on('user-disconnected', userId => {
+
     if (peers[userId]) peers[userId].close()
     var i;
     for(i=0;i<index;i++){
@@ -81,6 +85,7 @@ socket.on('user-connected', userId => {
     for(var j=i;j<index-1;j++){
         array[j] = array[j+1];
     }
+    userdiv[i].remove();
     index--;
   })
 
@@ -126,18 +131,18 @@ function connectToNewUser(userId, stream) {
   })
   call.on('close', () => {
     video.remove()
-    canvas.remove()
+    div.remove()
   })
   peers[userId] = call
 }
 
-function divStyle(in_tag){
+function divStyle(in_tag, y,x){
   in_tag.innerText = ID_UUID;
+  console.log(x,y);
   in_tag.style.fontSize = "1rem";
-  in_tag.style.position = "relative";
-  in_tag.style.top = '300px';
-  in_tag.style.textAlign = 'center';
-  in_tag.style.left = '-300px';
+  in_tag.style.position = "absolute";
+  in_tag.style.left = (x-59)+"px";
+  in_tag.style.top = y+"px";  
   in_tag.style.backgroundColor = 'black';
   in_tag.style.color = 'white';
   in_tag.style.border = '1px solid black'
@@ -152,7 +157,12 @@ function addVideoStream(video, canvas ,stream, div) {
   videoGrid.append(video)
   if(canvas != null && isHost != 1) {videoGrid.append(canvas)}
   videoGrid.append(div)
-  divStyle(div);
+  video_back = document.getElementsByTagName('video');
+  let video_last_idx = video_back.length-1;
+  let videopx_y = window.pageYOffset + video_back[video_last_idx].getBoundingClientRect().top;
+  let videopx_x = window.pageXOffset + video_back[video_last_idx].getBoundingClientRect().left;
+
+  divStyle(div, videopx_y,videopx_x);
 }
 function cheating(){
   socket.emit('cheating',ROOM_ID, idInfo)
