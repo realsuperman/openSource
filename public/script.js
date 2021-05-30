@@ -7,8 +7,8 @@ A Socket is the fundamental class for interacting with the server.
 //webgazer.setGazeListener(function(data, elapsedTime) {}).begin();
 const H_text = document.getElementById('header_title');
 const H_mode = document.getElementById('header_mode');
-const checkButton = document.getElementById('cheatingListSearchBtn');
-const mainElement = document.getElementsByClassName('main_position_parent');
+const divArea = document.getElementById('cheatingListSearchDiv');
+//const mainElement = document.getElementsByClassName('main_position_parent');
 let video_back = document.getElementsByTagName('video');
 let isHost;
 //const videoGrid = document.getElementById('video-grid');
@@ -21,58 +21,61 @@ const myPeer = new Peer(undefined, {
   host: '/',
   port: '3001'
 })
+
+H_text.innerText ='지금 현재 방 아이디 : ' + ROOM_ID;
+isHost = window.prompt("클라이언트이면 0 관리자면 1을 입력하세요");
+
 var idInfo;
 var index = 0;
 var arr = new Array(); 
-const myVideo = document.createElement('video')
-const myCanvas = document.createElement('canvas')
-const giddiv = document.createElement('div')
 var ID_UUID;
-webgazer.begin(undefined,myVideo,myCanvas)
-/*
-.createElement()는 요소를 만듭니다. 예를 들어
-.createElement( 'h1' )
-*/
-myVideo.muted = true
+var myVideo;
+var myCanvas;
+var giddiv;
+
+if(isHost == 0 ){
+  myVideo = document.createElement('video')
+  myCanvas = document.createElement('canvas')
+  webgazer.begin(undefined,myVideo,myCanvas)
+  giddiv = document.createElement('div')
+  H_mode.innerText = '당신은 클라이언트 입니다.' 
+  divArea.remove();
+  myVideo.muted = true
+}else {
+  H_mode.innerText = '당신은 관리자 입니다.';
+}
+
 const peers = {} //피어 배열들
 navigator.mediaDevices.getUserMedia({
   video: true,
   audio: true
 }).then(stream => {
-  H_text.innerText ='지금 현재 방 아이디 : ' + ROOM_ID;
-  isHost = window.prompt("클라이언트이면 0관리자면 1을 입력하세요");
-  if(isHost != 1){H_mode.innerText = '당신은 클라이언트 입니다.'; checkButton.remove();}
-  else {
-    H_mode.innerText = '당신은 관리자 입니다.';
-    const canvasElement = document.getElementsByTagName('canvas');
-    canvasElement[0].remove();
-  }
-  addVideoStream(myVideo, myCanvas ,stream,giddiv);
-  if(isHost == 1){
-  myPeer.on('call', call => {
+  addVideoStream(myVideo, myCanvas ,stream,giddiv,isHost)
+  
+  myPeer.on('call', call => { // 들어오는 녀석들
+    //if(isHost == 0) return;
     call.answer(stream)
     const video = document.createElement('video')
-    const canvas = document.createElement('canvas')
+    //const canvas = document.createElement('canvas')
     const div = document.createElement('div')
     //webgazer.begin(undefined,video2,canvas2)
     call.on('stream', userVideoStream => {
-      addVideoStream(video, canvas, userVideoStream, div)
+      if(isHost == 1) addVideoStream(video, null, userVideoStream, div,0)
     })
   })
-}
+
   //이 부분이 이제 비디오가 생기는 부분인듯
   //jQuery에서 이벤트를 바인드 하는 방법은 여러가지가 있지만 이번엔 on() 함수를 이용해서 이벤트를 바인드하는 것을 알아보자. 이벤트 바인딩
   //특정 동작을 통해서 새로운 Element들이 <div class="root"> 아래로 생성
   //socket.on(eventName, callback)
 //------------------------------------------------------------------------
 socket.on('user-connected', userId => {
-    console.log("님은 관리자임");
     ID_UUID = userId;
     // user is joining
     setTimeout(() => {
       // user joined
       connectToNewUser(userId, stream)
-    }, 8000)
+    }, 5000)
   })
   
   socket.on('user-disconnected', userId => {
@@ -85,49 +88,65 @@ socket.on('user-connected', userId => {
     for(var j=i;j<index-1;j++){
         array[j] = array[j+1];
     }
-    userdiv[i].remove();
+    //userdiv[i].remove();
     index--;
+
+    var str='';
+    if(index == 0) $('#cheatingListSearchDiv').text("현재 커닝자 없음")
+    else {
+      for(var i=0;i<index;i++){
+        str = str+String(arr[i])
+        str = str+" | "
+      }  
+      $('#cheatingListSearchDiv').text(str)
+    }
   })
 
   socket.on('user-cheating', userId => {
     arr[index++] = userId 
+    var str='';
+    for(var i=0;i<index;i++){
+        str = str+String(arr[i])
+        str = str+" | "
+    }  
+
+    $('#cheatingListSearchDiv').text(str)
   })
 })
 //server에서 user-connected 되었으면 하는동작
 //server에서 user-disconnected 되었으면 하는동작
 //------------------------------------------------------------------------
 myPeer.on('open', id => {
-  let width, height
-  if(isHost != 1){
-  setTimeout(() => {
-    const [ox, oy, oWidth, oHeight] = webgazer.computeValidationBoxSize()
-    if (!width) width = webgazer.params.videoViewerWidth 
-    if (!height) height = webgazer.params.videoViewerHeight 
-    
-    setInterval(() => {
-      const x = _.random(0, width - oWidth)
-      const y = _.random(0, height - oHeight)
-      webgazer.computeValidationBoxSize = () => [x, y, oWidth, oHeight]
-      webgazer.setVideoViewerSize(width, height)
-    }, 2000)
-  }, 3000)
-}
-else{
+  if(isHost == 0){
+    let width, height
+    setTimeout(() => {
+      const [ox, oy, oWidth, oHeight] = webgazer.computeValidationBoxSize()
+      if (!width) width = webgazer.params.videoViewerWidth 
+      if (!height) height = webgazer.params.videoViewerHeight 
+      
+      setInterval(() => {
+        const x = _.random(0, width - oWidth)
+        const y = _.random(0, height - oHeight)
+        webgazer.computeValidationBoxSize = () => [x, y, oWidth, oHeight]
+        webgazer.setVideoViewerSize(width, height)
+      }, 2000)
+    }, 5000)
+  }
   
-}
   idInfo = id;
   ID_UUID = id;
   socket.emit('join-room', ROOM_ID, id)
 })
 
 function connectToNewUser(userId, stream) {
+  if(isHost == 0) return;
   const call = myPeer.call(userId, stream)
   const video = document.createElement('video')
   const div = document.createElement('div')
   //const canvas = none
   //webgazer.begin(undefined,video,canvas)
   call.on('stream', userVideoStream => {
-    addVideoStream(video, null ,userVideoStream, div)
+    addVideoStream(video, null ,userVideoStream, div,0)
   })
   call.on('close', () => {
     video.remove()
@@ -149,13 +168,14 @@ function divStyle(in_tag, y,x){
   in_tag.style.width = '320px';
   in_tag.style.height = '20px';
 }
-function addVideoStream(video, canvas ,stream, div) {
+function addVideoStream(video, canvas ,stream, div,sw) {
+  if(sw == 1) return;
   video.srcObject = stream
   video.addEventListener('loadedmetadata', () => {
     video.play()
   })
   videoGrid.append(video)
-  if(canvas != null && isHost != 1) {videoGrid.append(canvas)}
+  //if(canvas != null && isHost != 1) {videoGrid.append(canvas)}
   videoGrid.append(div)
   video_back = document.getElementsByTagName('video');
   let video_last_idx = video_back.length-1;
@@ -164,11 +184,12 @@ function addVideoStream(video, canvas ,stream, div) {
 
   divStyle(div, videopx_y,videopx_x);
 }
+
 function cheating(){
   socket.emit('cheating',ROOM_ID, idInfo)
 }
 
-$('#cheatingListSearchBtn').click(function(){
+/*$('#cheatingListSearchBtn').click(function(){
   if(index>0){
     var win = window.open("", "PopupWin", "width=500,height=600");
     for(var i=0;i<index;i++){
@@ -178,4 +199,4 @@ $('#cheatingListSearchBtn').click(function(){
   }else{
     alert("없습니다.");
   }
-});
+});*/
