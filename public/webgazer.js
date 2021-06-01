@@ -44975,7 +44975,7 @@ function store_points(x, y, k) {
      * // TODO These are all wrong. The latestEyeFeatures will be in 'video' space not 'preview' space, and so need to be converted.
      */
     function checkEyesInValidationBox() {
-        if(redValue>=4000){
+        if(redValue>=100){
             cheating();
             redValue++;
             return;
@@ -45043,6 +45043,7 @@ function store_points(x, y, k) {
         else {
             color='gray';
             faceFeedbackBox.style.border = 'solid black';
+            redValue++;
         }
     }
 
@@ -45145,7 +45146,7 @@ function store_points(x, y, k) {
 
     async function loop() {
         if (!paused) {
-            if(redValue>4000) return;
+            if(redValue>100) return;
             // [20200617 XK] TODO: there is currently lag between the camera input and the face overlay. This behavior
             // is not seen in the facemesh demo. probably need to optimize async implementation. I think the issue lies
             // in the implementation of getPrediction().
