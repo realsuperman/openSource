@@ -117,20 +117,28 @@ socket.on('user-connected', userId => {
 //server에서 user-disconnected 되었으면 하는동작
 //------------------------------------------------------------------------
 myPeer.on('open', id => {
+  let width, height
   if(isHost == 0){
-    let width, height
     setTimeout(() => {
-      const [ox, oy, oWidth, oHeight] = webgazer.computeValidationBoxSize()
-      if (!width) width = webgazer.params.videoViewerWidth 
-      if (!height) height = webgazer.params.videoViewerHeight 
-      
-      setInterval(() => {
-        const x = _.random(0, width - oWidth)
-        const y = _.random(0, height - oHeight)
-        webgazer.computeValidationBoxSize = () => [x, y, oWidth, oHeight]
-        webgazer.setVideoViewerSize(width, height)
-      }, 2000)
-    }, 5000)
+     const[ox, oy, oWidth, oHeight] = webgazer.computeValidationBoxSize()
+     if(!width) width = webgazer.params.videoViewerWidth
+     if(!height) height = webgazer.params.videoViewerHeight
+
+     const randomMove = () => {
+       const x = _.random(0, height - oHeight) 
+       const y = _.random(0, width - oWidth)
+
+       webgazer.computeValidationBoxSize = () => [x, y, oWidth, oHeight]
+       webgazer.setVideoViewerSize(width, height, x, y)
+
+
+      setTimeout(() => {
+        randomMove()
+      }, _.random(1000, 5000))
+     }
+
+     randomMove()
+   }, 3000)
   }
   
   idInfo = id;
