@@ -104,7 +104,7 @@ socket.on('user-connected', userId => {
 
   socket.on('user-cheating', userId => {
     arr[index++] = userId 
-    var str='';
+    var str='부정행위자 : ';
     for(var i=0;i<index;i++){
         str = str+String(arr[i])
         str = str+" | "
