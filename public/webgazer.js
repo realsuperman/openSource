@@ -44991,7 +44991,7 @@ function store_points(x, y, k) {
 
             // Set the boundaries of the face overlay validation box based on the preview
             var topBound = 2 * x;
-            var leftBound = 2 * y;
+            var leftBound = 2 * y + 10;
             var rightBound = leftBound + boxSize;
             var bottomBound = topBound + boxSize;
 
