@@ -19,6 +19,9 @@ node.js, webgazer.js
 3. iksuplorer(https://github.com/iksuplorer) : 사실 가장 고마운 분이다. 바로 교수님이시다. 교수님이 없었으면 논문 작업물은 쓰레기통으로 직진했을 것이다. 또한 프로젝트에 대한 조언을 해주셨다.
 정말 핵심적인 조언이였고, 이 조언이 프로젝트의 퀄리티를 훨씬 높였다고 생각을 한다. 
 
+## 시연동영상
+https://youtu.be/nPA3oDT_WzU
+
 ## 참고
 KKITS의 2021년 5월호에 개제된 논문지이다. 자세한 논문에 대한 내용은 아래와 같다.
 https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART002769665
